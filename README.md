@@ -8,8 +8,7 @@ This plugin will only work on events ingested **after** the plugin was enabled. 
 
 This plugin will set all configured properties to null inside an ingested event. Usually it makes sense to place this plugin at the *end* of the plugin chain.
 
-Note in some cases it is necessary to pass in the property name both with and without
-a leading `$`, f.e. `ip,$ip`.
+Note when specifying `$ip`, additionally `event.ip` will be removed.
 
 ## Credits
 
