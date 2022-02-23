@@ -9,11 +9,16 @@
     },
     "author": "",
     "license": "MIT",
+    "scripts": {
+        "test": "jest ."
+    },
     "bugs": {
         "url": "https://github.com/witty-works/posthog-property-filter-plugin/issues"
     },
     "homepage": "https://github.com/witty-works/posthog-property-filter-plugin#readme",
     "devDependencies": {
+        "@posthog/plugin-scaffold": "^0.12.10",
+        "jest": "^27.5.1",
         "posthog-plugins": "^0.2.2"
     }
 }
