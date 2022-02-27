@@ -1,6 +1,6 @@
 {
     "name": "property-filter-plugin",
-    "version": "1.0.1",
+    "version": "1.1.0",
     "description": "Filter a list of properties from the event data.",
     "main": "index.js",
     "repository": {
