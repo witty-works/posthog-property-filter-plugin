@@ -12,6 +12,8 @@ function recursiveFilterObject(properties, propertyToFilter) {
     } else if (currentPropertyToFilter in properties) {
         parsedProperties = { ...properties }
         delete parsedProperties[currentPropertyToFilter]
+    } else {
+        parsedProperties = { ...properties }
     }
 
     return propertyToFilterCopy.length ? { [currentPropertyToFilter]: parsedProperties } : parsedProperties
