@@ -34,3 +34,12 @@ test('event properties are filtered', async () => {
     expect(event.properties.$set).toHaveProperty('firstName', 'Post')
     expect(event.properties.foo.bar.baz).toHaveProperty('two', 'two')
 })
+
+const emptyProperties = {}
+
+test('event properties are empty when no properties are given', async () => {
+    const event = await processEvent(createEvent(emptyProperties), { global })
+
+    expect(event.properties).not.toHaveProperty('$set')
+    expect(event.properties).not.toHaveProperty('foo')
+})

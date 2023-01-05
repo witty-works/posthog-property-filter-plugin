@@ -27,7 +27,7 @@ async function processEvent(event, { global }) {
             delete event.ip
         }
 
-        if (propertyToFilter.includes('.')) {
+        if (Object.keys(propertiesCopy).length > 0 && propertyToFilter.includes('.')) {
             propertiesCopy = {
                 ...propertiesCopy,
                 ...recursiveFilterObject(propertiesCopy, propertyToFilter.split('.')),
