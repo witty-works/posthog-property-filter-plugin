@@ -17,10 +17,10 @@ function recursiveFilterObject(properties, propertyToFilter) {
     return propertyToFilterCopy.length ? { [currentPropertyToFilter]: parsedProperties } : parsedProperties
 }
 
-async function processEvent(event, { global, storage }) {
+async function processEvent(event, { global }) {
     let propertiesCopy = event.properties ? { ...event.properties } : {}
 
-    global.propertiesToFilter.forEach(async function (propertyToFilter) {
+    for (const propertyToFilter of global.propertiesToFilter) {
         if (propertyToFilter === '$ip') {
             delete event.ip
         }
@@ -33,8 +33,8 @@ async function processEvent(event, { global, storage }) {
         } else if (propertyToFilter in propertiesCopy) {
             delete propertiesCopy[propertyToFilter]
         }
-    })
-
+    }
+    
     return { ...event, properties: propertiesCopy }
 }
 
