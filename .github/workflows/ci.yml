@@ -1,7 +1,11 @@
 name: CI
 
 on:
-  - push
+  push:
+    branches:
+      - main
+      - dev
+  pull_request:
 
 jobs:
   unit-tests:
