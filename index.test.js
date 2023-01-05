@@ -1,7 +1,7 @@
 const { createEvent } = require('@posthog/plugin-scaffold/test/utils')
 const { processEvent } = require('.')
 
-const global = { propertiesToFilter: ['gender', '$set.age', 'foo.bar.baz.one', 'nonExisting'] }
+const global = { propertiesToFilter: ['gender', '$set.age', 'foo.bar.baz.one', 'nonExisting', '$set.$not_in_props'] }
 
 const properties = {
     properties: {
