@@ -1,5 +1,7 @@
 async function setupPlugin({ config, global }) {
     global.propertiesToFilter = config.properties.split(',')
+    global.setPropertiesToFilter = config.$set_properties.split(',')
+    global.setOncePropertiesToFilter = config.$set_once_properties.split(',')
 }
 
 function recursiveFilterObject(properties, propertyToFilter) {
@@ -22,6 +24,26 @@ function recursiveFilterObject(properties, propertyToFilter) {
 async function processEvent(event, { global }) {
     let propertiesCopy = event.properties ? { ...event.properties } : {}
 
+    // filter items from top level $set
+    const setPropsToFilter = global.setPropertiesToFilter
+    if (event.$set && setPropsToFilter.length > 0) {
+        let setPropCopy = {...event.$set }
+        for (const propertyToFilter of setPropsToFilter) {
+            delete setPropCopy[propertyToFilter]
+        }
+        event.$set = setPropCopy
+    }
+
+    // filter items from top level $set_once
+    const setOncePropsToFilter = global.setOncePropertiesToFilter
+    if (event.$set_once && setOncePropsToFilter.length > 0) {
+        let setOncePropCopy = {...event.$set_once }
+        for (const propertyToFilter of setOncePropsToFilter) {
+            delete setOncePropCopy[propertyToFilter]
+        }
+        event.$set_once = setOncePropCopy
+    }
+
     for (const propertyToFilter of global.propertiesToFilter) {
         if (propertyToFilter === '$ip') {
             delete event.ip
@@ -36,7 +58,7 @@ async function processEvent(event, { global }) {
             delete propertiesCopy[propertyToFilter]
         }
     }
-    
+
     return { ...event, properties: propertiesCopy }
 }
 
