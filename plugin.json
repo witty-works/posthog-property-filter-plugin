@@ -14,6 +14,22 @@
       "default": "",
       "hint": "Separate properties with commas, without using spaces, like so: `foo,bar,baz`",
       "required": true
+    },
+    {
+      "key": "$set_properties",
+      "name": "List of $set properties to filter out:",
+      "type": "string",
+      "default": "",
+      "hint": "Separate properties with commas, without using spaces, like so: `foo,bar,baz`",
+      "required": true
+    },
+    {
+      "key": "$set_once_properties",
+      "name": "List of $set_once properties to filter out:",
+      "type": "string",
+      "default": "",
+      "hint": "Separate properties with commas, without using spaces, like so: `foo,bar,baz`",
+      "required": true
     }
   ]
 }

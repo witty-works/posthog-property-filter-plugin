@@ -22,6 +22,28 @@ function recursiveFilterObject(properties, propertyToFilter) {
 async function processEvent(event, { global }) {
     let propertiesCopy = event.properties ? { ...event.properties } : {}
 
+    // filter items from top level $set
+    const setPropsToFilter = global.propertiesToFilter.filter(prop => prop.includes('$set'))
+    if (event.$set && setPropsToFilter.length > 0) {
+        let setPropCopy = {...event.$set }
+        for (const propertyToFilter of setPropsToFilter) {
+            let propKeyToFilter = propertyToFilter.split('.').pop()
+            delete setPropCopy[propKeyToFilter]
+        }
+        event.$set = setPropCopy
+    }
+
+    // filter items from top level $set_once
+    const setOncePropsToFilter = global.propertiesToFilter.filter(prop => prop.includes('$set_once'))
+    if (event.$set_once && setOncePropsToFilter.length > 0) {
+        let setOncePropCopy = {...event.$set_once }
+        for (const propertyToFilter of setOncePropsToFilter) {
+            let propKeyToFilter = propertyToFilter.split('.').pop()
+            delete setOncePropCopy[propKeyToFilter]
+        }
+        event.$set_once = setOncePropCopy
+    }
+
     for (const propertyToFilter of global.propertiesToFilter) {
         if (propertyToFilter === '$ip') {
             delete event.ip
@@ -36,7 +58,7 @@ async function processEvent(event, { global }) {
             delete propertiesCopy[propertyToFilter]
         }
     }
-    
+
     return { ...event, properties: propertiesCopy }
 }
 
