@@ -2,21 +2,17 @@ async function setupPlugin({ config, global }) {
     global.propertiesToFilter = config.properties.split(',')
 }
 
-function recursiveFilterObject(properties, propertyToFilter) {
-    const propertyToFilterCopy = [...propertyToFilter]
-    const currentPropertyToFilter = propertyToFilterCopy.shift()
-    let parsedProperties = {}
-
-    if (propertyToFilterCopy.length && properties[currentPropertyToFilter]) {
-        parsedProperties = recursiveFilterObject(properties[currentPropertyToFilter], propertyToFilterCopy)
-    } else if (currentPropertyToFilter in properties) {
-        parsedProperties = { ...properties }
-        delete parsedProperties[currentPropertyToFilter]
-    } else {
-        parsedProperties = { ...properties }
+function recursiveRemoveFilterObject(properties, propertyToFilterParts) {
+    // if we've reached the final filter part, then we can remove the key if it exists
+    // otherwise recursively go down the properties object with the remaining filter parts
+    const currentKey = propertyToFilterParts.shift()
+    if (currentKey != undefined && currentKey in properties) {
+        if (propertyToFilterParts.length == 0) {
+            delete properties[currentKey]
+        } else {
+            recursiveRemoveFilterObject(properties[currentKey], propertyToFilterParts)
+        }
     }
-
-    return propertyToFilterCopy.length ? { [currentPropertyToFilter]: parsedProperties } : parsedProperties
 }
 
 async function processEvent(event, { global }) {
@@ -27,14 +23,7 @@ async function processEvent(event, { global }) {
             delete event.ip
         }
 
-        if (Object.keys(propertiesCopy).length > 0 && propertyToFilter.includes('.')) {
-            propertiesCopy = {
-                ...propertiesCopy,
-                ...recursiveFilterObject(propertiesCopy, propertyToFilter.split('.')),
-            }
-        } else if (propertyToFilter in propertiesCopy) {
-            delete propertiesCopy[propertyToFilter]
-        }
+        recursiveRemoveFilterObject(propertiesCopy, propertyToFilter.split('.'))
     }
     
     return { ...event, properties: propertiesCopy }
