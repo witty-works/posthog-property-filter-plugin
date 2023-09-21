@@ -1,5 +1,9 @@
 # Property Filter Plugin
 
+## DEPRECATED
+
+Moved to https://github.com/posthog/property-filter-plugin
+
 ## Important!
 
 This plugin will only work on events ingested **after** the plugin was enabled. This means all events ingested **before** enabling this plugin will still have the properties.
